@@ -16,6 +16,11 @@ const Hero = () => {
     }
   }, []);
 
+  const copyText = (text) =>{
+    alert( text +" is copied")
+    navigator.clipboard.writeText(text)
+  }
+
   const handleEye = () => {
     if (ref.current.src.includes(hiddenImg)) {
       ref.current.src = eyeImg;
@@ -118,17 +123,18 @@ const Hero = () => {
                 return (
                   <tr key={index}>
                     <td className="p-2 flex justify-center items-center gap-2  text-center border border-white">
-                      <a href={item.site} target="_blank">
+                      <a  href={item.site} target="_blank">
                         {item.site}
                       </a>
                       <lord-icon
                         style={{ width: "20px" }}
+                        onClick={()=>{copyText(item.site)}}
                         src="https://cdn.lordicon.com/xuoapdes.json"
                         trigger="hover"
                       ></lord-icon>
                     </td>
                     <td className="p-2  text-center border border-white">
-                      <div className="flex justify-center items-center gap-2">
+                      <div onClick={()=>{copyText(item.username)}} className="flex justify-center items-center gap-2">
                         {item.username}
                         <lord-icon
                           style={{ width: "20px" }}
@@ -138,7 +144,7 @@ const Hero = () => {
                       </div>
                     </td>
                     <td className="p-2  text-center border border-white">
-                      <div className="flex justify-center items-center gap-2">
+                      <div onClick={()=>{copyText(item.password)}} className="flex justify-center items-center gap-2">
                         {item.password}
                         <lord-icon
                           style={{ width: "20px" }}
