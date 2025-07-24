@@ -12,19 +12,18 @@ const Hero = () => {
   useEffect(() => {
     let passwords = localStorage.getItem("passwords");
     if (passwords) {
-      setPasswordArray([JSON.parse(passwords)]);
+      setPasswordArray(JSON.parse(passwords));
     }
   }, []);
 
   const handleEye = () => {
-    
     if (ref.current.src.includes(hiddenImg)) {
       ref.current.src = eyeImg;
-      passwordRef.current.type = "password"
+      passwordRef.current.type = "password";
     } else {
       alert("This will show you the password");
       ref.current.src = hiddenImg;
-      passwordRef.current.type = "text"
+      passwordRef.current.type = "text";
     }
   };
 
@@ -34,17 +33,14 @@ const Hero = () => {
 
   const savePassword = () => {
     setPasswordArray([...passwordArray, form]);
-    localStorage.setItem(
-      "passwords",
-      JSON.stringify([...passwordArray,form])
-    );
+    localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
     console.log([...passwordArray, form]);
     // console.log(form);
   };
 
   return (
     <div>
-      <div className=" h-[93vh] p-4  bg-emerald-50">
+      <div className="  p-4  bg-white">
         <div className="text-center w-3/4 mx-auto bg-neutral-0 p-2 rounded-md ">
           <div className="text-4xl font-bold m-2">
             Pass <span className="text-emerald-400">MG</span>
@@ -106,30 +102,57 @@ const Hero = () => {
           <div className="text-xl font-bold text-center m-2">
             Your Passwords
           </div>
+          {passwordArray.length == 0 && (
+            <div className="text-lg mt-16 text-center">
+              There are no passwords...
+            </div>
+          )}
+          {passwordArray.length !== 0 && (
+            <table className="table-auto w-5/6 mx-auto bg-emerald-100 ">
+              <thead>
+                <tr className="bg-emerald-800 text-white ">
+                  <th className="p-2">Website</th>
+                  <th className="p-2">Username</th>
+                  <th className="p-2">Password</th>
+                </tr>
+              </thead>
+              <tbody>
+                {passwordArray.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td className="p-2 flex justify-center items-center gap-2  text-center border border-white">
+                        {item.site}
+                        <lord-icon
+                          src="https://cdn.lordicon.com/xuoapdes.json"
+                          trigger="hover"
+                        ></lord-icon>
+                      </td>
+                      <td className="p-2  text-center border border-white">
+                        <div className="flex justify-center items-center gap-2">
+                          {item.username}
+                          <lord-icon
+                            src="https://cdn.lordicon.com/xuoapdes.json"
+                            trigger="hover"
+                          ></lord-icon>
+                        </div>
+                      </td>
+                      <td className="p-2  text-center border border-white">
+                        <div className="flex justify-center items-center gap-2">
+                          {item.password}
+                        <lord-icon
+                          src="https://cdn.lordicon.com/xuoapdes.json"
+                          trigger="hover"
+                        ></lord-icon>
+                        </div>
+                        
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
-        <table className="table-auto w-5/6 mx-auto bg-emerald-100 ">
-          <thead>
-            <tr className="bg-emerald-800 text-white ">
-              <th className="p-2">Website</th>
-              <th className="p-2">Username</th>
-              <th className="p-2">Password</th>
-            </tr>
-          </thead>
-          <tbody>
-            {passwordArray.map((item , index) => {
-              return(
-              <tr key={index}>
-                <td className="p-2 text-center border border-white">
-                  {item.site}
-                </td>
-                <td className="p-2 text-center border border-white">
-                  {item.username} 
-                </td>
-                <td className="p-2 text-center border border-white">{item.password}</td>
-              </tr>)
-            })}
-          </tbody>
-        </table>
       </div>
     </div>
   );
