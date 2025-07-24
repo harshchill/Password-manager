@@ -1,4 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { MdEditSquare } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import eyeImg from "../assets/eye.png";
 import hiddenImg from "../assets/hidden.png";
 
@@ -16,10 +20,20 @@ const Hero = () => {
     }
   }, []);
 
-  const copyText = (text) =>{
-    alert( text +" is copied")
-    navigator.clipboard.writeText(text)
-  }
+  const copyText = (text) => {
+    toast.success("Copied to clipboard!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+    navigator.clipboard.writeText(text);
+  };
 
   const handleEye = () => {
     if (ref.current.src.includes(hiddenImg)) {
@@ -45,6 +59,19 @@ const Hero = () => {
 
   return (
     <main className="  p-4  bg-white">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={true}
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <div className="text-center w-3/4 mx-auto bg-neutral-0 p-2 rounded-md ">
         <div className="text-4xl font-bold m-2">
           Pass <span className="text-emerald-400">MG</span>
@@ -97,7 +124,7 @@ const Hero = () => {
                 src="https://cdn.lordicon.com/awjeikyj.json"
                 trigger="hover"
               ></lord-icon>{" "}
-              Add Password
+              Save Password
             </button>
           </div>
         </div>
@@ -116,6 +143,7 @@ const Hero = () => {
                 <th className="p-2 ">Website</th>
                 <th className="p-2">Username</th>
                 <th className="p-2">Password</th>
+                <th className="p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -123,18 +151,25 @@ const Hero = () => {
                 return (
                   <tr key={index}>
                     <td className="p-2 flex justify-center items-center gap-2  text-center border border-white">
-                      <a  href={item.site} target="_blank">
+                      <a href={item.site} target="_blank">
                         {item.site}
                       </a>
                       <lord-icon
                         style={{ width: "20px" }}
-                        onClick={()=>{copyText(item.site)}}
+                        onClick={() => {
+                          copyText(item.site);
+                        }}
                         src="https://cdn.lordicon.com/xuoapdes.json"
                         trigger="hover"
                       ></lord-icon>
                     </td>
                     <td className="p-2  text-center border border-white">
-                      <div onClick={()=>{copyText(item.username)}} className="flex justify-center items-center gap-2">
+                      <div
+                        onClick={() => {
+                          copyText(item.username);
+                        }}
+                        className="flex justify-center items-center gap-2"
+                      >
                         {item.username}
                         <lord-icon
                           style={{ width: "20px" }}
@@ -144,7 +179,12 @@ const Hero = () => {
                       </div>
                     </td>
                     <td className="p-2  text-center border border-white">
-                      <div onClick={()=>{copyText(item.password)}} className="flex justify-center items-center gap-2">
+                      <div
+                        onClick={() => {
+                          copyText(item.password);
+                        }}
+                        className="flex justify-center items-center gap-2"
+                      >
                         {item.password}
                         <lord-icon
                           style={{ width: "20px" }}
@@ -152,6 +192,16 @@ const Hero = () => {
                           trigger="hover"
                         ></lord-icon>
                       </div>
+                    </td>
+                    <td className="p-2 flex gap-2  justify-center  text-center border border-white">
+                      <span  className="m-2">
+                        
+                      <MdEditSquare size={20}/>
+                      </span>
+                      <span className="m-2">
+
+                      <MdDelete size={20}/>
+                      </span>
                     </td>
                   </tr>
                 );
