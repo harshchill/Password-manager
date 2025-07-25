@@ -3,7 +3,7 @@ import React from "react";
 const Navbar = () => {
   return (
     <nav>
-      <ul className="flex justify-between items-center px-20 py-2 bg-emerald-900 text-white">
+      <ul className="flex justify-between items-center px-8  md:px-20 py-2 bg-emerald-900 text-white">
         <li className="text-2xl font-semibold">
           Pass <span className="text-emerald-400">MG</span>
         </li>

@@ -54,6 +54,17 @@ const Hero = () => {
     setPasswordArray([...passwordArray, form]);
     localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
     console.log([...passwordArray, form]);
+    toast.success("Password saved!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
     // console.log(form);
   };
 
@@ -72,7 +83,7 @@ const Hero = () => {
         theme="light"
         transition={Bounce}
       />
-      <div className="text-center w-3/4 mx-auto bg-neutral-0 p-2 rounded-md ">
+      <div className="text-center w-full md:w-3/4 mx-auto bg-neutral-0 p-2 rounded-md ">
         <div className="text-4xl font-bold m-2">
           Pass <span className="text-emerald-400">MG</span>
         </div>
@@ -137,7 +148,7 @@ const Hero = () => {
           </div>
         )}
         {passwordArray.length !== 0 && (
-          <table className="table-auto w-5/6 mx-auto  bg-emerald-100 m-10">
+          <table className="table-auto w-full md:w-5/6 mx-auto  bg-emerald-100 m-10 overflow-hidden rounded-md">
             <thead>
               <tr className="bg-emerald-800 text-white ">
                 <th className="p-2 ">Website</th>
@@ -150,18 +161,20 @@ const Hero = () => {
               {passwordArray.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td className="p-2 flex justify-center items-center gap-2  text-center border border-white">
-                      <a href={item.site} target="_blank">
-                        {item.site}
-                      </a>
-                      <lord-icon
-                        style={{ width: "20px" }}
-                        onClick={() => {
-                          copyText(item.site);
-                        }}
-                        src="https://cdn.lordicon.com/xuoapdes.json"
-                        trigger="hover"
-                      ></lord-icon>
+                    <td className="p-2  border border-white">
+                      <div className="flex justify-center items-center gap-2  text-center ">
+                        <a href={item.site} target="_blank">
+                          {item.site}
+                        </a>
+                        <lord-icon
+                          style={{ width: "20px" }}
+                          onClick={() => {
+                            copyText(item.site);
+                          }}
+                          src="https://cdn.lordicon.com/xuoapdes.json"
+                          trigger="hover"
+                        ></lord-icon>
+                      </div>
                     </td>
                     <td className="p-2  text-center border border-white">
                       <div
@@ -193,15 +206,15 @@ const Hero = () => {
                         ></lord-icon>
                       </div>
                     </td>
-                    <td className="p-2 flex gap-2  justify-center  text-center border border-white">
-                      <span  className="m-2">
-                        
-                      <MdEditSquare size={20}/>
-                      </span>
-                      <span className="m-2">
-
-                      <MdDelete size={20}/>
-                      </span>
+                    <td className="p-2  border border-white">
+                      <div className="flex gap-2  justify-center  text-center">
+                        <span className="m-2">
+                          <MdEditSquare size={20} />
+                        </span>
+                        <span className="m-2">
+                          <MdDelete size={20} />
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 );
