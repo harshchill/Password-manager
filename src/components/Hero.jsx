@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEditSquare } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
@@ -13,11 +14,14 @@ const Hero = () => {
   const [form, setform] = useState({ site: "", username: "", password: "" });
   const [passwordArray, setPasswordArray] = useState([]);
 
+  const getPasswords = async () => {
+    let res = await fetch("http://localhost:3000/");
+    let passwords = await res.json();
+    setPasswordArray(passwords);
+  };
+
   useEffect(() => {
-    let passwords = localStorage.getItem("passwords");
-    if (passwords) {
-      setPasswordArray(JSON.parse(passwords));
-    }
+    getPasswords();
   }, []);
 
   const copyText = (text) => {
@@ -50,22 +54,73 @@ const Hero = () => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
 
-  const savePassword = () => {
-    setPasswordArray([...passwordArray, form]);
-    localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
-    console.log([...passwordArray, form]);
-    toast.success("Password saved!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-    // console.log(form);
+  const savePassword = async () => {
+    if (
+      form.site.length < 3 ||
+      form.username.length < 3 ||
+      form.password.length < 3
+    ) {
+      toast.error("Invalid format!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else {
+      setPasswordArray([...passwordArray, { ...form, id: uuidv4() }]);
+      // localStorage.setItem(
+      //   "passwords",
+      //   JSON.stringify([...passwordArray, form])
+      // );
+      await fetch("http://localhost:3000/", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: form.id }) })
+
+      await fetch("http://localhost:3000/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, id: uuidv4() }) })
+      console.log([...passwordArray, form]);
+      setform({ site: "", username: "", password: "" });
+      toast.success("Password saved!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  //Handle delete
+  const deletePassword = async (id) => {
+    let c = confirm("this will delete the password!");
+    if (c) {
+      setPasswordArray(passwordArray.filter((item) => item.id !== id));
+      await fetch("http://localhost:3000/", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
+
+       toast.success("Password Deleted!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  //Handle edit
+  const editPassword = async (id) => {
+    setform({ ...passwordArray.filter((i) => i.id === id)[0], id: id });
+    setPasswordArray(passwordArray.filter((item) => item.id !== id));
   };
 
   return (
@@ -97,7 +152,7 @@ const Hero = () => {
             className="border border-emerald-300 rounded-md px-2 py-1"
             type="text"
           />
-          <div className="flex gap-5">
+          <div className="flex gap-5 md:flex-row flex-col">
             <input
               name="username"
               onChange={handleChange}
@@ -148,7 +203,7 @@ const Hero = () => {
           </div>
         )}
         {passwordArray.length !== 0 && (
-          <table className="table-auto w-full md:w-5/6 mx-auto  bg-emerald-100 m-10 overflow-hidden rounded-md">
+          <table className="table-auto min-w-full md:w-5/6 mx-auto overflow-x-hidden bg-emerald-100 m-10 overflow-hidden rounded-md">
             <thead>
               <tr className="bg-emerald-800 text-white ">
                 <th className="p-2 ">Website</th>
@@ -162,7 +217,7 @@ const Hero = () => {
                 return (
                   <tr key={index}>
                     <td className="p-2  border border-white">
-                      <div className="flex justify-center items-center gap-2  text-center ">
+                      <div className="flex justify-center items-center gap-2 overflow-x-hidden text-center ">
                         <a href={item.site} target="_blank">
                           {item.site}
                         </a>
@@ -198,7 +253,7 @@ const Hero = () => {
                         }}
                         className="flex justify-center items-center gap-2"
                       >
-                        {item.password}
+                        {"*".repeat(item.password.length)}
                         <lord-icon
                           style={{ width: "20px" }}
                           src="https://cdn.lordicon.com/xuoapdes.json"
@@ -208,10 +263,20 @@ const Hero = () => {
                     </td>
                     <td className="p-2  border border-white">
                       <div className="flex gap-2  justify-center  text-center">
-                        <span className="m-2">
+                        <span
+                          className="m-2"
+                          onClick={() => {
+                            editPassword(item.id);
+                          }}
+                        >
                           <MdEditSquare size={20} />
                         </span>
-                        <span className="m-2">
+                        <span
+                          className="m-2"
+                          onClick={() => {
+                            deletePassword(item.id);
+                          }}
+                        >
                           <MdDelete size={20} />
                         </span>
                       </div>
