@@ -1,12 +1,53 @@
-# React + Vite
+# Password Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack Password Manager application built with **React** (frontend), **Vite**, **Express.js** (backend), and **MongoDB** (database). This project allows users to securely store, view, and manage their passwords for different websites.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+### Frontend
+- **React** (with Hooks)
+- **Vite** (for fast development and HMR)
+- **Tailwind CSS** (for styling)
+- **React Toastify** (for notifications)
+- **Lordicon** (animated icons)
+- **React Icons** (icon library)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Backend
+- **Node.js**
+- **Express.js**
+- **MongoDB** (NoSQL database)
+- **dotenv** (for environment variables)
+- **body-parser** (parsing request bodies)
+- **cors** (Cross-Origin Resource Sharing)
+
+---
+
+## 📦 Dependencies
+
+### Frontend (`/src`)
+- `react`
+- `react-dom`
+- `react-toastify`
+- `react-icons`
+- `tailwindcss`
+- `vite`
+- `@vitejs/plugin-react`
+- `lord-icon-element` (or CDN)
+
+### Backend (`/backend`)
+- `express`
+- `mongodb`
+- `dotenv`
+- `body-parser`
+- `cors`
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/password-manager.git
+cd password-manager
